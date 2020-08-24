@@ -171,9 +171,16 @@ namespace RemoteLab.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\r\n          on error resume next\r\n          dim connstr, remotepowershelluser, po" +
-            "olName\r\n          connstr = \"{0}\"\r\n          remotepowershelluser = \"{1}\"\r\n     " +
-            "     poolName = \"{2}\"\r\n        ")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"
+          on error resume next
+          dim connstr, remotepowershelluser, poolName
+          connstr = ""{0}""
+          remotepowershelluser = ""{1}""
+          poolName = CreateObject(""WScript.Shell"").Environment(""Process"")(""REMOTELAB_POOL"")
+          If poolName = """" Then
+              poolName = ""{2}""
+          End If
+        ")]
         public string RemoteLabSettingsFileContent {
             get {
                 return ((string)(this["RemoteLabSettingsFileContent"]));
