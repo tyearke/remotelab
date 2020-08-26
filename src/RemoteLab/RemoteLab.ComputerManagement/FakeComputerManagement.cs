@@ -8,12 +8,12 @@ namespace RemoteLab.ComputerManagement
 {
     public class FakeComputerManagement : IComputerManagement
     {
-        public async Task<bool> ConnectToTcpPortAsync(string ComputerName, string UserDNSDomain, int TcpPort)
+        public async Task<bool> ConnectToTcpPortAsync(string NetworkAddress, int TcpPort)
         {
             return await Task.Run(() => true);
         }
 
-        public async Task<bool> RebootComputerAsync(string ComputerName, string AdminUser, string AdminPassword, string UserDomain, string UserDNSDomain)
+        public async Task<bool> RebootComputerAsync(string NetworkAddress, string AdminUser, string AdminPassword, string UserDomain)
 
         {
             return await Task.Run( () => true );

@@ -13,6 +13,10 @@ namespace RemoteLab.Models
         [Display( Name="Computer Name", ShortName = "Computer")]
         public string ComputerName { get; set;}
 
+        [MaxLength(255)]
+        [Display( Name = "Custom Network Address", ShortName = "Custom Address")]
+        public string CustomNetworkAddress { get; set; }
+
         [MaxLength(50)]
         [Display( Name = "User Name", ShortName = "User")]
         public string UserName { get; set; }
@@ -25,5 +29,15 @@ namespace RemoteLab.Models
         public DateTime? Logon { get; set; }
 
         public Pool Pool { get; set; }
+
+        public string GetNetworkAddress()
+        {
+            var networkAddress = this.CustomNetworkAddress;
+            if (networkAddress == null)
+            {
+                networkAddress = String.Format(@"{0}.{1}", this.ComputerName, Properties.Settings.Default.ActiveDirectoryDNSDomain);
+            }
+            return networkAddress;
+        }
     }
 }

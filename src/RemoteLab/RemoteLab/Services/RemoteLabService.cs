@@ -76,11 +76,11 @@ namespace RemoteLab.Services
 
         }
 
-        public async Task<bool> RebootComputerAsync(String ComputerName, String CurrentUser, String PoolName, DateTime Now)
+        public async Task<bool> RebootComputerAsync(String ComputerName, String NetworkAddress, String CurrentUser, String PoolName, DateTime Now)
         {
             var pool = await this.GetPoolByIdAsync(PoolName);
             var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
-            var RebootResult = await this.CompMgmt.RebootComputerAsync(ComputerName, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain, Properties.Settings.Default.ActiveDirectoryDNSDomain);
+            var RebootResult = await this.CompMgmt.RebootComputerAsync(NetworkAddress, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain);
             if (!RebootResult) 
             {
                 await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);
@@ -100,14 +100,14 @@ namespace RemoteLab.Services
             await Smtp.SendMailAsync(Properties.Settings.Default.SmtpServer, Properties.Settings.Default.SmtpMessageFromAddress, pool.EmailNotifyList, msg, msg);
         }
 
-        public async Task<bool> CheckRdpPortAndRebootIfUnresponsiveAsync(String ComputerName, String ComputerDomain, String UserName, String PoolName, int RdpTcpPort)
+        public async Task<bool> CheckRdpPortAndRebootIfUnresponsiveAsync(String ComputerName, String NetworkAddress, String UserName, String PoolName, int RdpTcpPort)
         {
             bool result = false;
-            bool success = await this.CompMgmt.ConnectToTcpPortAsync(ComputerName, ComputerDomain, RdpTcpPort);
+            bool success = await this.CompMgmt.ConnectToTcpPortAsync(NetworkAddress, RdpTcpPort);
             if (!success) 
             {
                 await this.LogFailedRdpTcpPortCheckAsync(ComputerName, UserName);
-                result = await this.RebootComputerAsync(ComputerName, UserName, PoolName, System.DateTime.Now);
+                result = await this.RebootComputerAsync(ComputerName, NetworkAddress, UserName, PoolName, System.DateTime.Now);
             }
 
             return success;
@@ -122,6 +122,11 @@ namespace RemoteLab.Services
         {
             this.Db.Pools.Add(p);
             await this.Db.SaveChangesAsync();
+        }
+
+        public Computer GetComputerByName(string ComputerName)
+        {
+            return this.Db.Computers.Find(ComputerName);
         }
 
         public async Task<IEnumerable<Computer>> GetComputersByPoolNameAsync(String PoolName)

@@ -19,10 +19,10 @@ namespace RemoteLab.ComputerManagement
             this.Logger = Logger;
         }
 
-        public async Task<bool> RebootComputerAsync(string ComputerName, string AdminUser, string AdminPassword, string UserDomain, string UserDNSDomain)
+        public async Task<bool> RebootComputerAsync(string NetworkAddress, string AdminUser, string AdminPassword, string UserDomain)
 
         {
-            var ManagementPath = new ManagementPath(String.Format(@"\\{0}.{1}\root\cimv2", ComputerName, UserDNSDomain));
+            var ManagementPath = new ManagementPath(String.Format(@"\\{0}\root\cimv2", NetworkAddress));
             var Options = new ConnectionOptions()
             {
                 EnablePrivileges = true,
@@ -59,16 +59,14 @@ namespace RemoteLab.ComputerManagement
             return true;
         }
 
-        public async Task<bool> ConnectToTcpPortAsync(string ComputerName, string UserDNSDomain, int TcpPort)
+        public async Task<bool> ConnectToTcpPortAsync(string NetworkAddress, int TcpPort)
         {
-
-            var Hostname = String.Format(@"{0}.{1}", ComputerName, UserDNSDomain);
             var TcpClient = new TcpClient();
             try
             {
                 TcpClient.ReceiveTimeout = 10;
                 TcpClient.SendTimeout = 10;
-                await TcpClient.ConnectAsync(Hostname, TcpPort);
+                await TcpClient.ConnectAsync(NetworkAddress, TcpPort);
                 if (TcpClient.Connected) { TcpClient.Close(); }
             }
             catch (SocketException e)
