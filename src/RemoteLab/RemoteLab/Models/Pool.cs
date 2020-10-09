@@ -59,5 +59,15 @@ namespace RemoteLab.Models
 
         [MaxLength(255)]
         public string InitializationVector {get; set;}
+
+        public string GetRemoteAdminDomain()
+        {
+            return UserUtility.GetUserComponents(this.RemoteAdminUser)["domain"];
+        }
+
+        public string GetRemoteAdminUsername()
+        {
+            return UserUtility.GetUserComponents(this.RemoteAdminUser)["username"];
+        }
     }
 }
