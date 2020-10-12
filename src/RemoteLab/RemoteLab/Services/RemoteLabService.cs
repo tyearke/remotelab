@@ -80,7 +80,7 @@ namespace RemoteLab.Services
         {
             var pool = await this.GetPoolByIdAsync(PoolName);
             var password = this.Pw.Decrypt(pool.RemoteAdminPassword, pool.InitializationVector);
-            var RebootResult = await this.CompMgmt.RebootComputerAsync(NetworkAddress, pool.RemoteAdminUser, password, Properties.Settings.Default.ActiveDirectoryDomain);
+            var RebootResult = await this.CompMgmt.RebootComputerAsync(NetworkAddress, pool.GetRemoteAdminUsername(), password, pool.GetRemoteAdminDomain());
             if (!RebootResult) 
             {
                 await this.LogEventAsync("REBOOT FAILED", CurrentUser, ComputerName, PoolName,Now);

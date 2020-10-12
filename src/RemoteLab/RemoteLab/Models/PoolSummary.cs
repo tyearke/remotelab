@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using RemoteLab.Utilities;
 
 namespace RemoteLab.Models
 {
@@ -63,6 +64,16 @@ namespace RemoteLab.Models
         public IDbAsyncEnumerator GetAsyncEnumerator()
         {
             throw new NotImplementedException();
+        }
+
+        public string GetRemoteAdminDomain()
+        {
+            return UserUtility.GetUserComponents(this.RemoteAdminUser)["domain"];
+        }
+
+        public string GetRemoteAdminUsername()
+        {
+            return UserUtility.GetUserComponents(this.RemoteAdminUser)["username"];
         }
     }
 }

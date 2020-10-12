@@ -265,6 +265,7 @@
     <Compile Include="Utilities\PoolAdministratorAuthorize.cs" />
     <Compile Include="Utilities\SmtpEmail.cs" />
     <Compile Include="Utilities\ClaimsPrincipalExtensions.cs" />
+    <Compile Include="Utilities\UserUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App_Readme\Elmah.txt" />

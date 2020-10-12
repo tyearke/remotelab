@@ -141,7 +141,7 @@ namespace RemoteLab.Controllers
             
             var buff= String.Format(Properties.Settings.Default.RemoteLabSettingsFileContent,
                             String.Format("{0};{1}","Provider=sqloledb",this.Svc.DatbaseConnectionString()),
-                            stats.RemoteAdminUser, 
+                            stats.GetRemoteAdminUsername(), 
                             PoolName);
             var contentType = "text/plain";
             
