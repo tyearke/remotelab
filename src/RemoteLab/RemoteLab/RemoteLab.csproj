@@ -199,6 +199,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PoolsController.cs" />
+    <Compile Include="CustomValidators\NoDomainPrefixAttribute.cs" />
     <Compile Include="CustomValidators\NotAnEmailAttribute.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />

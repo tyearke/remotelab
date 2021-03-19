@@ -8,6 +8,7 @@ namespace RemoteLab.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [NoDomainPrefix]
         [NotAnEmail]
         public string UserName { get; set; }
 
